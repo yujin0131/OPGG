@@ -3,10 +3,10 @@ package com.yujin.opgg;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+//@SpringBootTest
 class OpggApplicationTests {
 
-	@Test
+	//@Test
 	void contextLoads() {
 	}
 
