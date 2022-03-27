@@ -35,6 +35,11 @@ dependencies {
 	//json사용
 	implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1'
 	
+	//jsp 사용
+	implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
+	implementation 'javax.servlet:jstl'
+
+
 }
 
 compileJava.options.encoding = 'UTF-8'
