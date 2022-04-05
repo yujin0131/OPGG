@@ -1,12 +1,17 @@
 <%@page import="javax.xml.bind.DatatypeConverter"%>
 <%@ page contentType="text/html; charset=euc-kr" language="java" %>
 
+<%@page import="java.nio.charset.Charset"%>
+<%@page import="java.util.BASE64"%>
+<%@page import="javax.xml.bind.DatatypeConverter"%>
+<%@ page contentType="text/html; charset=euc-kr" language="java" %>
+
 <%@ page import="java.util.*"%>
 <%@ page import="javax.crypto.spec.DESKeySpec"%>
 <%@ page import="javax.crypto.SecretKeyFactory"%>
 <%@ page import="javax.crypto.Cipher"%>
 <%@ page import="javax.crypto.SecretKey"%>
-
+<%@ page import="java.util.BASE64"%>
 
 <%
 boolean Makeflag=false;
@@ -26,6 +31,7 @@ String licenseString = "";
 String retval = "";
 String licenseKind = "";
 String websquareSoft = "";
+String coverted = "";
 
 if(Makeflag){
 licenseKind=request.getParameter("licenseKind");
@@ -81,22 +87,30 @@ System.out.println("encodedLicense : " + encodedLicense);
 System.out.println("encodedLicenseKey : " + encodedLicenseKey);
 
 System.out.println("============복호화============");
-String splitLicense = retval.substring(0,5);
 String splitLicenseKey = retval.substring(5,34);
-splitLicense += retval.substring(34);
+StringBuilder splitLicense = new StringBuilder();
+splitLicense.append(retval.substring(0,5).trim());
+splitLicense.append(retval.substring(34).trim());
 
-System.out.println("splitLicense : " + splitLicense);
 System.out.println("splitLicenseKey : " + splitLicenseKey);
 
 BASE64Decoder decoder = new BASE64Decoder();
 
 byte[] deco = decoder.decodeBuffer(splitLicense);
-//String decodedString = new String(ciperdecode.doFinal(ciptext));
-System.out.print("deco : ");
-for(int i = 0; i < deco.length; i++){
-	
-System.out.print(deco[i]);
-}
+byte[] decoKey = decoder.decodeBuffer(splitLicenseKey);
+//decoder.decodeBuffer(splitLicense);
+
+SecretKeyFactory deskf = SecretKeyFactory.getInstance("DES");
+SecretKey demyKey = skf.generateSecret(new DESKeySpec(decoKey));
+
+Cipher decipher = Cipher.getInstance("DES");
+decipher.init(Cipher.DECRYPT_MODE, demyKey);
+
+byte[] decoLicense = decoder.decodeBuffer(splitLicense.toString());
+byte[] n = decipher.doFinal(decoLicense);
+
+coverted = new String(n);
+System.out.println("coverted : " + coverted);
 
 /* 
 BASE64Decoder decoder = new BASE64Decoder();
@@ -212,6 +226,10 @@ document.getElementById("WebsquareSoft").style.display="";
 <tr>
 <td>License Key</td>
 <td><textarea id="result" style="width:600px;height:100px;"><%=retval%></textarea></td>
+</tr>
+<tr>
+<td>라이선스 내용</td>
+<td><textarea id="decodeLicense" style="width:600px;height:50px;"><%=coverted%></textarea></td>
 </tr>
 </table>
 </form>
