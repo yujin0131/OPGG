@@ -1,12 +1,17 @@
 <%@page import="javax.xml.bind.DatatypeConverter"%>
 <%@ page contentType="text/html; charset=euc-kr" language="java" %>
 
+<%@page import="java.nio.charset.Charset"%>
+<%@page import="java.util.BASE64"%>
+<%@page import="javax.xml.bind.DatatypeConverter"%>
+<%@ page contentType="text/html; charset=euc-kr" language="java" %>
+
 <%@ page import="java.util.*"%>
 <%@ page import="javax.crypto.spec.DESKeySpec"%>
 <%@ page import="javax.crypto.SecretKeyFactory"%>
 <%@ page import="javax.crypto.Cipher"%>
 <%@ page import="javax.crypto.SecretKey"%>
-
+<%@ page import="java.util.BASE64"%>
 
 <%
 boolean Makeflag=false;
